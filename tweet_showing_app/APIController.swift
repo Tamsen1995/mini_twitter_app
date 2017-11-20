@@ -13,7 +13,7 @@ import Foundation
 class APIController {
     
     weak var delegate : APITwitterDelegate?
-    let token : String
+    var token : String?
     
     init (delegate: APITwitterDelegate?, token: String) {
         self.delegate = delegate
@@ -22,43 +22,40 @@ class APIController {
     
     // MARK: the intended search request totwards twitter
     
-    func request(contains: String) {
+    func SearchRequest(contains: String) {
         
-        
-        // A Dictionary of parameters
-        let parameters = ["username": "@tamsen910", "tweet": "Hello World !"]
+        // make a request using the unique bearer token here
         guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json") else {
             print("ERROR: url was invalid")
             return
         }
         var request = URLRequest(url: url)
-        
-        
         request.httpMethod = "GET"
-        // adds a value to the http header
-        request.addValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        //            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
-        guard let httpBody = try? JSONSerialization.data(withJSONObject: parameters, options: []) else {
-            return }
+        
+        if let token = self.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        guard let httpBody = try? JSONSerialization.data(withJSONObject: contains, options: []) else {
+            print("Couldn't make httpBody")
+            return
+        }
         request.httpBody = httpBody
         
-        // Making another session but this time we're passing the request into it
-        // And not the url
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
-            // printing the response
             if let response = response {
-                print(response)
+                print("response:\n\n\(response)\n\n")
             }
-            // printing the data
             if let data = data {
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
+                    print("json:\n\n\(json)\n\n")
                 } catch {
                     print(error)
                 }
+                
             }
             }.resume()
     }
@@ -68,53 +65,42 @@ class APIController {
     func getToken() {
         // Make POST request to the oauth2 endpoint to get the token
         
-        
-        
         //authorization
         let CONSUMER_KEY = "NeH3OHvCf3bpVSdV2flF8VNOp"
         let CONSUMER_SECRET = "YWsC8y6S7ocAq8HIx21ndKppdFPW6fq6s5ubw2SlEy4lztC4QX"
         let BEARER = ((("\(CONSUMER_KEY):\(CONSUMER_SECRET)")).base64Encoded())!
         
-        // set content type to be application/x-www-form-urlencoded;charset=UTF-8
-        
-        /*
-         // Don't know what this means
-         
-         Accept-Encoding: gzip
-         grant_type=client_credentials
-         */
-        
-        // set the url to the oauth 2 https://api.twitter.com/oauth2/token
         guard let url = URL(string: "https://api.twitter.com/oauth2/token") else {
             print("ERROR: The token url was invalid")
             return
         }
         var request = URLRequest(url: url)
-        
-        // set the http method to POST, since the token we're looking for can be found in the response
         request.httpMethod = "POST"
-        // set content type to be application/x-www-form-urlencoded;charset=UTF-8
         request.setValue("Basic \(BEARER)", forHTTPHeaderField: "Authorization")
         request.setValue("application/x-www-form-urlencoded;charset=UTF-8", forHTTPHeaderField: "Content-Type")
         request.httpBody = "grant_type=client_credentials".data(using: String.Encoding.utf8)
-        
-        print(BEARER)
-        
         let session = URLSession.shared
+        
         session.dataTask(with: request) { (data, response, error) in
             if let response = response {
-                print(response)
-            }          // printing the data
-            
+                print("Response:\n\n \(response)\n\n\n")
+            }
             if let data = data {
                 do {
                     let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print(json)
+                    // extract the bearer token from here and set it to self.token
+                    print("The json received is the following:\n \(json)\n\n\n")
+                    if let dictionary = json as? [String: String] {
+                        if let token = dictionary["access_token"] {
+                            print("The bearer token received is: \(token)\n\n")
+                            self.token = token
+                        }
+                    }
                 } catch {
                     print(error)
                 }
             }
-        }.resume()
+            }.resume()
     }
     
 }
