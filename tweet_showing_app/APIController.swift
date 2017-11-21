@@ -27,7 +27,7 @@ class APIController {
         // make a request using the unique bearer token here
         
         let q = contains.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=100&lang=fr&result_type=recent") else {
+        guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=2&lang=fr&result_type=recent") else {
             print("ERROR: url was invalid")
             return
         }
@@ -37,9 +37,7 @@ class APIController {
         if let token = self.token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-     //   request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-
+        //   request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
@@ -48,8 +46,20 @@ class APIController {
             }
             if let data = data {
                 do {
-                    let json = try JSONSerialization.jsonObject(with: data, options: [])
-                    print("json:\n\n\(json)\n\n")
+                    
+                    // Converting the json data into a, what I deem to be a dictionary
+                    let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                    // Making an Any array out of the statuses element of the json
+                    if let tweetsD : [Any] = json!["statuses"]! as? [Any] {
+                        // iterating over the elements in said array
+                        for tweet in tweetsD {
+                            // TODO : extract the actual tweet out of the json array
+                        }
+                    }
+                    
+                    
+                    
+                    
                 } catch {
                     print(error)
                 }
@@ -59,7 +69,7 @@ class APIController {
     }
     
     // MARK: The request towards twitter in order to get an OAuth2.0 token
-
+    
     
 }
 
