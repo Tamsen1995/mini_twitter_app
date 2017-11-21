@@ -50,10 +50,17 @@ class APIController {
                     // Converting the json data into a, what I deem to be a dictionary
                     let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
                     // Making an Any array out of the statuses element of the json
-                    if let tweetsD : [Any] = json!["statuses"]! as? [Any] {
+                    if let tweetsD : [NSDictionary] = json!["statuses"]! as? [NSDictionary] {
                         // iterating over the elements in said array
                         for tweet in tweetsD {
-                            // TODO : extract the actual tweet out of the json array
+                            // each tweet is a NSDictionary
+                            print(tweet["text"]) // EXTRACTED THE TEXT
+                            // TODO: EXTRACT USERNAME, AND ALL OTHER NECESSARY INFO
+                            // TODO: CLEAN UP CODE
+                            for entry in tweet {
+                                // each entry in the tweet object has its own key, including the text of the tweet
+                                //   print(entry)
+                            }
                         }
                     }
                     
