@@ -57,10 +57,6 @@ class APIController {
                             print(tweet["text"]) // EXTRACTED THE TEXT
                             // TODO: EXTRACT USERNAME, AND ALL OTHER NECESSARY INFO
                             // TODO: CLEAN UP CODE
-                            for entry in tweet {
-                                // each entry in the tweet object has its own key, including the text of the tweet
-                                //   print(entry)
-                            }
                         }
                     }
                     
