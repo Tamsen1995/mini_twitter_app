@@ -18,10 +18,7 @@ class ViewController: UIViewController, APITwitterDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        getToken()
-
-        
-        
+        makeRequest(contains: "ecole 42")
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -41,8 +38,8 @@ class ViewController: UIViewController, APITwitterDelegate {
         print(error)
     }
     
-    
-    func getToken() {
+    // This function gets the bearer token, and then fires off the search request
+    func makeRequest(contains: String) {
         // Make POST request to the oauth2 endpoint to get the token
         
         //authorization
@@ -61,35 +58,30 @@ class ViewController: UIViewController, APITwitterDelegate {
         request.httpBody = "grant_type=client_credentials".data(using: String.Encoding.utf8)
         let session = URLSession.shared
         
-        let queue = DispatchQueue(label: "TokenGetter")
-        queue.sync {
-            session.dataTask(with: request) { (data, response, error) in
-                if let response = response {
-                    print("Response:\n\n \(response)\n\n\n")
-                }
-                if let data = data {
-                    do {
-                        let json = try JSONSerialization.jsonObject(with: data, options: [])
-                        // extract the bearer token from here and set it to self.token
-                        print("The json received is the following:\n \(json)\n\n\n")
-                        if let dictionary = json as? [String: String] {
-                            if let token = dictionary["access_token"] {
-                                print("The bearer token received is: \(token)\n\n")
-                                self.token = token as String // might be redundant to cast
-                                
-                                if let token = self.token {
-                                    let controller = APIController(delegate: self, token: token)
-                                    controller.SearchRequest(contains: "whatever")
-                                }
+        session.dataTask(with: request) { (data, response, error) in
+            if let response = response {
+                print("Response:\n\n \(response)\n\n\n")
+            }
+            if let data = data {
+                do {
+                    let json = try JSONSerialization.jsonObject(with: data, options: [])
+                    // extract the bearer token from here and set it to self.token
+                    print("The json received is the following:\n \(json)\n\n\n")
+                    if let dictionary = json as? [String: String] {
+                        if let token = dictionary["access_token"] {
+                            print("The bearer token received is: \(token)\n\n")
+                            self.token = token as String // might be redundant to cast
+                            if let token = self.token {
+                                let controller = APIController(delegate: self, token: token)
+                                controller.SearchRequest(contains: contains)
                             }
                         }
-                    } catch {
-                        print(error)
                     }
+                } catch {
+                    print(error)
                 }
-                }.resume()
-        }
-        print(self.token)
+            }
+            }.resume()
     }
     
 }
