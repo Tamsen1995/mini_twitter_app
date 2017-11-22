@@ -13,19 +13,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // Testing Array
     var list = ["I" , "am", "testing", "this", "tableview", "Bruh"]
-    
     var token : String?
     var tweetsArray : [Tweet]?
-    
+    @IBOutlet weak var tableView: UITableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        makeRequest(contains: "ecole 42")
-        
-        
-        
+        // This piece of code loads an array Tweet structs
+        // containing the desired string into the tweetsArray of the class
+        makeRequest(contains: "ecole 42") {
+            tweetsArray in
+            self.tweetsArray = tweetsArray
+        }
         // Do any additional setup after loading the view, typically from a nib.
     }
     
@@ -34,6 +34,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         // Dispose of any resources that can be recreated.
     }
     
+    // Function to process incoming tweets
     func Tweet(tweet: [Tweet]) {
         print(tweet)
     }
@@ -49,14 +50,14 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        cell.textLabel?.text = list[indexPath.row]
+//        cell.textLabel?.text = list[indexPath.row]
         return cell
     }
     
 
     
     // This function gets the bearer token, and then fires off the search request
-    func makeRequest(contains: String) {
+    func makeRequest(contains: String, completion: @escaping (_ tweetsArray: [Tweet]) -> ()) {
         // Make POST request to the oauth2 endpoint to get the token
         
         //authorization
@@ -95,22 +96,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                                 // sets the tweetsArray in the controller to the desired value
                                 controller.SearchRequest(contains) {
                                     tweetsArray in
-                                    
-                                    
-                                    // in here call another completinhandler in order
-                                    // to return to the ViewDidLoad Function
-                                    
-                                    //////////////////////////////////////////////////
-                                    for things in tweetsArray {
-                                        print(things)
-                                    }
-                                    //////////////////////////////////////////////////
-
+                                    completion(tweetsArray)
                                 }
-                                
-                                // which we then set to the ViewControllers tweetsArray for further proceeding
-                                
-                                
                             }
                         }
                     }

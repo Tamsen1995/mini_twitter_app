@@ -55,8 +55,6 @@ class APIController {
                     if let tweetsD : [NSDictionary] = json!["statuses"]! as? [NSDictionary] {
                         tweetsArray = self.extractTweets(tweetsD)
                         completion(tweetsArray)
-                        // TODO:  Figure out how to return them into the ViewController
-                        
                     }
                 } catch {
                     print(error)
