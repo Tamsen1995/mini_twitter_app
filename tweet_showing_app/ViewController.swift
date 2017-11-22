@@ -8,11 +8,14 @@
 
 import UIKit
 
-class ViewController: UIViewController, APITwitterDelegate {
-    
-    // TODO figure out how to make this work
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, APITwitterDelegate {
+
+
+    // Testing Array
+    var list = ["I" , "am", "testing", "this", "tableview", "Bruh"]
     
     var token : String?
+    var tweetsArray : [Tweet]?
     
     
     override func viewDidLoad() {
@@ -22,8 +25,6 @@ class ViewController: UIViewController, APITwitterDelegate {
         
         // Do any additional setup after loading the view, typically from a nib.
     }
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -37,6 +38,18 @@ class ViewController: UIViewController, APITwitterDelegate {
     func ErrorCase(error: NSError) {
         print(error)
     }
+    
+    // The number of cells we need, in this case it's the amount of tweets we receive back
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return list.count // testing
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        cell.textLabel?.text = list[indexPath.row]
+        return cell
+    }
+    
     
     // This function gets the bearer token, and then fires off the search request
     func makeRequest(contains: String) {
@@ -71,9 +84,11 @@ class ViewController: UIViewController, APITwitterDelegate {
                         if let token = dictionary["access_token"] {
                             print("The bearer token received is: \(token)\n\n")
                             self.token = token as String // might be redundant to cast
+                            
+                            // Once we have the token, nil check the token and then fire a search to the API
                             if let token = self.token {
                                 let controller = APIController(delegate: self, token: token)
-                                controller.SearchRequest(contains: contains)
+                                controller.SearchRequest(contains)
                             }
                         }
                     }

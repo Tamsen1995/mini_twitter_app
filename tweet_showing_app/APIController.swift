@@ -20,11 +20,16 @@ class APIController {
         self.token = token
     }
     
-    // MARK: the intended search request totwards twitter
+
     
-    func SearchRequest(contains: String) {
+    // MARK: the intended search request totwards twitter
+    // Makes the search request and then puts in an the array of structs in the sub function "extractTweets"
+    func SearchRequest(_ contains: String) {
         
         // make a request using the unique bearer token here
+        
+        // the array of structs of tweets to be returned
+        var tweetsStructArr: [Tweet] = []
         
         let q = contains.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
         guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=2&lang=fr&result_type=recent") else {
@@ -37,8 +42,6 @@ class APIController {
         if let token = self.token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-        //   request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
             if let response = response {
@@ -46,29 +49,37 @@ class APIController {
             }
             if let data = data {
                 do {
-                    
-                    // Converting the json data into a, what I deem to be a dictionary
+                    // Converting the json data into a dictionary
                     let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                    // Making an Any array out of the statuses element of the json
                     if let tweetsD : [NSDictionary] = json!["statuses"]! as? [NSDictionary] {
-                        // iterating over the elements in said array
-                        for tweet in tweetsD {
-                            // each tweet is a NSDictionary
-                            print(tweet["text"]) // EXTRACTED THE TEXT
-                            // TODO: EXTRACT USERNAME, AND ALL OTHER NECESSARY INFO
-                            // TODO: CLEAN UP CODE
-                        }
+                        tweetsStructArr = self.extractTweets(tweetsD)
                     }
-                    
-                    
-                    
-                    
                 } catch {
                     print(error)
                 }
-                
             }
             }.resume()
+    }
+    
+    private func extractTweets (_ tweetsDictionary: [NSDictionary]) -> [Tweet] {
+        
+        // The array of tweet structs to be returned
+        var ret: [Tweet] = []
+
+        // iterating over the elements in the tweets dictionary
+        for tweet in tweetsDictionary {
+            // each tweet is a NSDictionary
+            // the text key is the key in the Dict we're looking for
+            // also the "user" key
+            print(tweet["user"])
+            if let tweetText = tweet["text"] {
+                // tweetText is the extracted text
+                print(tweetText)
+            }
+            // TODO: EXTRACT USERNAME, AND ALL OTHER NECESSARY INFO
+            // TODO: CLEAN UP CODE
+        }
+        return ret
     }
     
     // MARK: The request towards twitter in order to get an OAuth2.0 token
