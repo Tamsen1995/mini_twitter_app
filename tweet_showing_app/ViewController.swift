@@ -9,8 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, APITwitterDelegate {
-
-
+    
+    
     // Testing Array
     var list = ["I" , "am", "testing", "this", "tableview", "Bruh"]
     
@@ -21,7 +21,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         makeRequest(contains: "ecole 42")
+        
+        
         
         // Do any additional setup after loading the view, typically from a nib.
     }
@@ -50,6 +53,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         return cell
     }
     
+
     
     // This function gets the bearer token, and then fires off the search request
     func makeRequest(contains: String) {
@@ -88,7 +92,25 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                             // Once we have the token, nil check the token and then fire a search to the API
                             if let token = self.token {
                                 let controller = APIController(delegate: self, token: token)
-                                controller.SearchRequest(contains)
+                                // sets the tweetsArray in the controller to the desired value
+                                controller.SearchRequest(contains) {
+                                    tweetsArray in
+                                    
+                                    
+                                    // in here call another completinhandler in order
+                                    // to return to the ViewDidLoad Function
+                                    
+                                    //////////////////////////////////////////////////
+                                    for things in tweetsArray {
+                                        print(things)
+                                    }
+                                    //////////////////////////////////////////////////
+
+                                }
+                                
+                                // which we then set to the ViewControllers tweetsArray for further proceeding
+                                
+                                
                             }
                         }
                     }
