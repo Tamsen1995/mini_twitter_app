@@ -8,28 +8,53 @@
 
 import UIKit
 
-class ViewController: UIViewController, APITwitterDelegate {
+class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, APITwitterDelegate {
     
-    // TODO figure out how to make this work
     
+    // Testing Array
+    var list = ["I" , "am", "testing", "this", "tableview", "Bruh"]
     var token : String?
+    @IBOutlet weak var tableView: UITableView!
+    
+    // the array of tweets (structs) to be loaded into the
+    // tableView
+    var tweetsArray : [Tweet] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            ////////////////////////////
+            for thing in tweetsArray {
+                print(thing)
+            }
+            //////////////////
+        }
+    }
+    
+    // Don't know if I'll actually need this
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        makeRequest(contains: "ecole 42")
-        
         // Do any additional setup after loading the view, typically from a nib.
     }
     
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        makeRequest(contains: "ecole 42") {
+            tweetsArray in
+            self.tweetsArray = tweetsArray
+        }
+        
+    }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
+    // Function to process incoming tweets
     func Tweet(tweet: [Tweet]) {
         print(tweet)
     }
@@ -38,8 +63,33 @@ class ViewController: UIViewController, APITwitterDelegate {
         print(error)
     }
     
+    // The number of cells we need, in this case it's the amount of tweets we receive back
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.tweetsArray.count
+        // testing
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let tweet = tweetsArray[indexPath.row]
+        // downcasts the cell into my cutsom tableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? tweetTableViewCell else {
+            fatalError("The dequeued cell is not an instance of MealTableViewCell.")
+        }
+        
+        cell.tweetText.text = tweet.text
+        cell.tweetUser.text = tweet.name
+
+        // This piece of code loads an array Tweet structs
+        // containing the desired string into the tweetsArray of the class
+        
+        
+        return cell
+    }
+    
+    
+    
     // This function gets the bearer token, and then fires off the search request
-    func makeRequest(contains: String) {
+    func makeRequest(contains: String, completion: @escaping (_ tweetsArray: [Tweet]) -> ()) {
         // Make POST request to the oauth2 endpoint to get the token
         
         //authorization
@@ -71,9 +121,15 @@ class ViewController: UIViewController, APITwitterDelegate {
                         if let token = dictionary["access_token"] {
                             print("The bearer token received is: \(token)\n\n")
                             self.token = token as String // might be redundant to cast
+                            
+                            // Once we have the token, nil check the token and then fire a search to the API
                             if let token = self.token {
                                 let controller = APIController(delegate: self, token: token)
-                                controller.SearchRequest(contains: contains)
+                                // sets the tweetsArray in the controller to the desired value
+                                controller.SearchRequest(contains) {
+                                    tweetsArray in
+                                    completion(tweetsArray)
+                                }
                             }
                         }
                     }

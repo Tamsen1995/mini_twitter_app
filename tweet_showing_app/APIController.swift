@@ -14,20 +14,26 @@ class APIController {
     
     weak var delegate : APITwitterDelegate?
     var token : String?
+
     
     init (delegate: APITwitterDelegate?, token: String) {
         self.delegate = delegate
         self.token = token
     }
     
-    // MARK: the intended search request totwards twitter
     
-    func SearchRequest(contains: String) {
+    
+    // MARK: the intended search request totwards twitter
+    // Makes the search request and then puts in an the array of structs in the sub function "extractTweets"
+    func SearchRequest(_ contains: String, completion: @escaping (_ tweetsARR: [Tweet]) -> ()) {
         
         // make a request using the unique bearer token here
+        var tweetsArray: [Tweet] = []
+
+        // the array of structs of tweets to be returned
         
         let q = contains.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=2&lang=fr&result_type=recent") else {
+        guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=10&lang=fr&result_type=recent") else {
             print("ERROR: url was invalid")
             return
         }
@@ -37,8 +43,6 @@ class APIController {
         if let token = self.token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
         }
-        //   request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        
         let session = URLSession.shared
         session.dataTask(with: request) { (data, response, error) in
             if let response = response {
@@ -46,37 +50,42 @@ class APIController {
             }
             if let data = data {
                 do {
-                    
-                    // Converting the json data into a, what I deem to be a dictionary
+                    // Converting the json data into a dictionary
                     let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-                    // Making an Any array out of the statuses element of the json
                     if let tweetsD : [NSDictionary] = json!["statuses"]! as? [NSDictionary] {
-                        // iterating over the elements in said array
-                        for tweet in tweetsD {
-                            // each tweet is a NSDictionary
-                            print(tweet["text"]) // EXTRACTED THE TEXT
-                            // TODO: EXTRACT USERNAME, AND ALL OTHER NECESSARY INFO
-                            // TODO: CLEAN UP CODE
-                            for entry in tweet {
-                                // each entry in the tweet object has its own key, including the text of the tweet
-                                //   print(entry)
-                            }
-                        }
+                        tweetsArray = self.extractTweets(tweetsD)
+                        completion(tweetsArray)
                     }
-                    
-                    
-                    
-                    
                 } catch {
                     print(error)
                 }
-                
             }
             }.resume()
     }
     
-    // MARK: The request towards twitter in order to get an OAuth2.0 token
-    
+    private func extractTweets (_ tweetsDictionary: [NSDictionary]) -> [Tweet] {
+        // The array of tweet structs to be returned
+        // We need to append the retUserName and retTweet into the array as the Tweet struct
+        var ret: [Tweet] = []
+        var retUserName = ""
+        var retTweet = ""
+        
+        // iterating over the elements in the tweets dictionary
+        for tweet in tweetsDictionary {
+            
+            if let tweetUser = tweet["user"] as? [String: Any] {
+                if let tweetUserName = tweetUser["name"] {
+                    retUserName = tweetUserName as! String
+                }
+            }
+            if let tweetText = tweet["text"] {
+                // tweetText is the extracted text
+                retTweet = tweetText as! String
+            }
+            ret.append(Tweet(name: retUserName, text: retTweet))
+        }
+        return ret
+    }
     
 }
 
