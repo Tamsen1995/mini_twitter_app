@@ -14,19 +14,39 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // Testing Array
     var list = ["I" , "am", "testing", "this", "tableview", "Bruh"]
     var token : String?
-    var tweetsArray : [Tweet]?
     @IBOutlet weak var tableView: UITableView!
+    
+    // the array of tweets (structs) to be loaded into the
+    // tableView
+    var tweetsArray : [Tweet] = [] {
+        didSet {
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+            ////////////////////////////
+            for thing in tweetsArray {
+                print(thing)
+            }
+            //////////////////
+        }
+    }
+    
+    // Don't know if I'll actually need this
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // This piece of code loads an array Tweet structs
-        // containing the desired string into the tweetsArray of the class
+        // Do any additional setup after loading the view, typically from a nib.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
         makeRequest(contains: "ecole 42") {
             tweetsArray in
             self.tweetsArray = tweetsArray
         }
-        // Do any additional setup after loading the view, typically from a nib.
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -45,16 +65,27 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // The number of cells we need, in this case it's the amount of tweets we receive back
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list.count // testing
+        return self.tweetsArray.count
+        // testing
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-//        cell.textLabel?.text = list[indexPath.row]
+        let tweet = tweetsArray[indexPath.row]
+        // downcasts the cell into my cutsom tableViewCell
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? tweetTableViewCell else {
+            fatalError("The dequeued cell is not an instance of MealTableViewCell.")
+        }
+        
+        cell.tweetText.text = tweet.text
+        
+        // This piece of code loads an array Tweet structs
+        // containing the desired string into the tweetsArray of the class
+        
+        
         return cell
     }
     
-
+    
     
     // This function gets the bearer token, and then fires off the search request
     func makeRequest(contains: String, completion: @escaping (_ tweetsArray: [Tweet]) -> ()) {

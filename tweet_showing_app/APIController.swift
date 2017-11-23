@@ -33,7 +33,7 @@ class APIController {
         // the array of structs of tweets to be returned
         
         let q = contains.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
-        guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=2&lang=fr&result_type=recent") else {
+        guard let url = URL(string: "https://api.twitter.com/1.1/search/tweets.json?q=\(q!))&count=10&lang=fr&result_type=recent") else {
             print("ERROR: url was invalid")
             return
         }
