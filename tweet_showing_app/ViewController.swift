@@ -26,10 +26,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
 
         }
     }
-    
     // Don't know if I'll actually need this
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
