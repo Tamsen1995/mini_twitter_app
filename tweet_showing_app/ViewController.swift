@@ -23,11 +23,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-            ////////////////////////////
-            for thing in tweetsArray {
-                print(thing)
-            }
-            //////////////////
+
         }
     }
     
@@ -85,8 +81,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         return cell
     }
-    
-    
+
     
     // This function gets the bearer token, and then fires off the search request
     func makeRequest(contains: String, completion: @escaping (_ tweetsArray: [Tweet]) -> ()) {
