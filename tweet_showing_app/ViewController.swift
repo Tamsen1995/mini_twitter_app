@@ -77,7 +77,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
         
         cell.tweetText.text = tweet.text
-        
+        cell.tweetUser.text = tweet.name
+
         // This piece of code loads an array Tweet structs
         // containing the desired string into the tweetsArray of the class
         
