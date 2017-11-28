@@ -14,7 +14,7 @@ class APIController {
     
     weak var delegate : APITwitterDelegate?
     var token : String?
-
+    
     
     init (delegate: APITwitterDelegate?, token: String) {
         self.delegate = delegate
@@ -29,7 +29,7 @@ class APIController {
         
         // make a request using the unique bearer token here
         var tweetsArray: [Tweet] = []
-
+        
         // the array of structs of tweets to be returned
         
         let q = contains.addingPercentEncoding(withAllowedCharacters: .urlHostAllowed)
@@ -69,6 +69,7 @@ class APIController {
         var ret: [Tweet] = []
         var retUserName = ""
         var retTweet = ""
+        var retDate = ""
         
         // iterating over the elements in the tweets dictionary
         for tweet in tweetsDictionary {
@@ -82,7 +83,19 @@ class APIController {
                 // tweetText is the extracted text
                 retTweet = tweetText as! String
             }
-            ret.append(Tweet(name: retUserName, text: retTweet))
+            if let tweetDate = tweet["created_at"] {
+                let dateformatter = DateFormatter()
+                
+                // converting from API date format to Date() format first
+                dateformatter.dateFormat = "EEE MMM dd HH:mm:ss Z yyyy"
+                let tempDate = dateformatter.date(from: tweetDate as! String)
+                
+                // converting to presentable date string here
+                dateformatter.dateFormat = "dd-MMM-yyyy"
+                let myStringdate = dateformatter.string(from: tempDate!)
+                retDate = myStringdate
+            }
+            ret.append(Tweet(name: retUserName, text: retTweet, date: retDate))
         }
         return ret
     }
