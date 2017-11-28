@@ -18,79 +18,73 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XhX-iN-OFo">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <searchBar key="tableHeaderView" contentMode="redraw" id="JL8-e7-phq">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
-                                    <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
-                                    <textInputTraits key="textInputTraits"/>
-                                    <connections>
-                                        <outlet property="delegate" destination="BYZ-38-t0r" id="8mR-j2-osV"/>
-                                    </connections>
-                                </searchBar>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="90" id="Sdv-6g-BLO" customClass="tweetTableViewCell" customModule="tweet_showing_app" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="72" width="375" height="90"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Sdv-6g-BLO" id="vNn-KY-TxZ">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cAf-TQ-qtn">
-                                                    <rect key="frame" x="0.0" y="29" width="375" height="60"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                                                </textView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxf-gk-WLG">
-                                                    <rect key="frame" x="0.0" y="0.0" width="99" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                        </tableViewCellContentView>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="MIo-Vv-s9d">
+                                <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                                <subviews>
+                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cpF-8g-tJU">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="126"/>
+                                        <nil key="textColor"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="90" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="XhX-iN-OFo">
+                                        <rect key="frame" x="0.0" y="126" width="375" height="477"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="cell" rowHeight="90" id="Sdv-6g-BLO" customClass="tweetTableViewCell" customModule="tweet_showing_app" customModuleProvider="target">
+                                                <rect key="frame" x="0.0" y="28" width="375" height="90"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Sdv-6g-BLO" id="vNn-KY-TxZ">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="89.5"/>
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="cAf-TQ-qtn">
+                                                            <rect key="frame" x="0.0" y="29" width="375" height="60"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                                        </textView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxf-gk-WLG">
+                                                            <rect key="frame" x="0.0" y="0.0" width="99" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="tweetText" destination="cAf-TQ-qtn" id="c0p-Yn-040"/>
+                                                    <outlet property="tweetUser" destination="Yxf-gk-WLG" id="2Iw-tV-tQa"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
                                         <connections>
-                                            <outlet property="tweetText" destination="cAf-TQ-qtn" id="c0p-Yn-040"/>
-                                            <outlet property="tweetUser" destination="Yxf-gk-WLG" id="2Iw-tV-tQa"/>
+                                            <outlet property="dataSource" destination="BYZ-38-t0r" id="Qyc-lQ-cyE"/>
+                                            <outlet property="delegate" destination="BYZ-38-t0r" id="UCB-Q1-UZ0"/>
                                         </connections>
-                                    </tableViewCell>
-                                </prototypes>
-                                <connections>
-                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Qyc-lQ-cyE"/>
-                                    <outlet property="delegate" destination="BYZ-38-t0r" id="UCB-Q1-UZ0"/>
-                                </connections>
-                            </tableView>
+                                    </tableView>
+                                </subviews>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="XhX-iN-OFo" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="74c-9n-Wcr"/>
-                            <constraint firstItem="XhX-iN-OFo" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="EiP-0p-ymx"/>
-                            <constraint firstItem="XhX-iN-OFo" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="bW0-R3-sjw"/>
-                            <constraint firstItem="XhX-iN-OFo" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="noM-0s-ceb"/>
+                            <constraint firstItem="MIo-Vv-s9d" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="JJA-zf-tym"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="MIo-Vv-s9d" secondAttribute="bottom" id="SAR-K6-cl2"/>
+                            <constraint firstItem="MIo-Vv-s9d" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="TYx-ka-Srs"/>
+                            <constraint firstItem="MIo-Vv-s9d" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="ZEq-iN-1SB"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="Ylc-vw-b6N"/>
                     <connections>
-                        <outlet property="searchDisplayController" destination="Qaq-Zr-vFi" id="Rdg-Os-YUT"/>
+                        <outlet property="searchItem" destination="cpF-8g-tJU" id="uTq-u4-g8R"/>
                         <outlet property="tableView" destination="XhX-iN-OFo" id="2LT-TG-kp4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <searchDisplayController id="Qaq-Zr-vFi">
-                    <connections>
-                        <outlet property="delegate" destination="BYZ-38-t0r" id="EVK-yk-ZeP"/>
-                        <outlet property="searchBar" destination="JL8-e7-phq" id="Si5-5A-9d8"/>
-                        <outlet property="searchContentsController" destination="BYZ-38-t0r" id="iaa-vY-4oK"/>
-                        <outlet property="searchResultsDataSource" destination="BYZ-38-t0r" id="Obc-yg-VJr"/>
-                        <outlet property="searchResultsDelegate" destination="BYZ-38-t0r" id="9e7-Lu-bQE"/>
-                    </connections>
-                </searchDisplayController>
             </objects>
             <point key="canvasLocation" x="479.19999999999999" y="131.78410794602701"/>
         </scene>

@@ -8,38 +8,43 @@
 
 import UIKit
 
-class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, APITwitterDelegate {
+class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate, UITableViewDataSource, APITwitterDelegate {
     
-    
-    // Testing Array
-    var list = ["I" , "am", "testing", "this", "tableview", "Bruh"]
     var token : String?
     @IBOutlet weak var tableView: UITableView!
     
-    // the array of tweets (structs) to be loaded into the
-    // tableView
+    // the word in the search bar at the top of the view
+    @IBOutlet weak var searchItem: UITextField!
+    
+    // the array of tweets (structs) to be loaded into the tableView
     var tweetsArray : [Tweet] = [] {
         didSet {
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
-
         }
     }
+        
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {   //delegate method
+        if let searchTerm = textField.text {
+            makeRequest(contains: searchTerm) {
+                tweetsArray in
+                self.tweetsArray = tweetsArray
+            }
+        }
+        textField.resignFirstResponder()
+        return true
+    }
+    
     // Don't know if I'll actually need this
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        searchItem.delegate = self //set delegate to textfile
         // Do any additional setup after loading the view, typically from a nib.
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        makeRequest(contains: "ecole 42") {
-            tweetsArray in
-            self.tweetsArray = tweetsArray
-        }
-        
     }
     
     override func didReceiveMemoryWarning() {
@@ -59,7 +64,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     // The number of cells we need, in this case it's the amount of tweets we receive back
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.tweetsArray.count
-        // testing
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -71,20 +75,19 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         cell.tweetText.text = tweet.text
         cell.tweetUser.text = tweet.name
-
-        // This piece of code loads an array Tweet structs
-        // containing the desired string into the tweetsArray of the class
         
+        // This loads an array Tweet structs
+        // containing the desired string into the tweetsArray of the class
         
         return cell
     }
-
+    
     
     // This function gets the bearer token, and then fires off the search request
     func makeRequest(contains: String, completion: @escaping (_ tweetsArray: [Tweet]) -> ()) {
         // Make POST request to the oauth2 endpoint to get the token
         
-        //authorization
+        //authorization (Should generally not be hardcoded, for testing purposes only)
         let CONSUMER_KEY = "NeH3OHvCf3bpVSdV2flF8VNOp"
         let CONSUMER_SECRET = "YWsC8y6S7ocAq8HIx21ndKppdFPW6fq6s5ubw2SlEy4lztC4QX"
         let BEARER = ((("\(CONSUMER_KEY):\(CONSUMER_SECRET)")).base64Encoded())!
@@ -113,7 +116,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
                         if let token = dictionary["access_token"] {
                             print("The bearer token received is: \(token)\n\n")
                             self.token = token as String // might be redundant to cast
-                            
                             // Once we have the token, nil check the token and then fire a search to the API
                             if let token = self.token {
                                 let controller = APIController(delegate: self, token: token)
