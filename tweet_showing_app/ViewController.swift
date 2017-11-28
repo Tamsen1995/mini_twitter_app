@@ -32,6 +32,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
                 self.tweetsArray = tweetsArray
             }
         }
+       // tableView.rowHeight = UITableViewAutomaticDimension
         textField.resignFirstResponder()
         return true
     }
@@ -75,7 +76,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
         
         cell.tweetText.text = tweet.text
         cell.tweetUser.text = tweet.name
-        
+       // cell.tweetUser. // TODO add date here into the cell once it's in the struct and array
         // This loads an array Tweet structs
         // containing the desired string into the tweetsArray of the class
         

@@ -46,16 +46,29 @@
                                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                         </textView>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxf-gk-WLG">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yxf-gk-WLG">
                                                             <rect key="frame" x="0.0" y="0.0" width="99" height="21"/>
-                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <constraints>
+                                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="10" id="TBb-d1-jP4"/>
+                                                            </constraints>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Cmd-ne-TkK">
+                                                            <rect key="frame" x="214" y="0.0" width="161" height="21"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
                                                     </subviews>
+                                                    <constraints>
+                                                        <constraint firstItem="Cmd-ne-TkK" firstAttribute="top" secondItem="vNn-KY-TxZ" secondAttribute="top" id="9xb-z9-Js4"/>
+                                                        <constraint firstAttribute="trailing" secondItem="Cmd-ne-TkK" secondAttribute="trailing" id="DKl-10-gd8"/>
+                                                    </constraints>
                                                 </tableViewCellContentView>
                                                 <connections>
+                                                    <outlet property="tweetDate" destination="Cmd-ne-TkK" id="b01-vX-eY9"/>
                                                     <outlet property="tweetText" destination="cAf-TQ-qtn" id="c0p-Yn-040"/>
                                                     <outlet property="tweetUser" destination="Yxf-gk-WLG" id="2Iw-tV-tQa"/>
                                                 </connections>

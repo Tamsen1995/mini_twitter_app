@@ -12,6 +12,7 @@ class tweetTableViewCell: UITableViewCell {
 
     // MARK: Properties
 
+    @IBOutlet weak var tweetDate: UILabel!
     @IBOutlet weak var tweetUser: UILabel!
     @IBOutlet weak var tweetText: UITextView!
     
