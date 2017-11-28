@@ -78,7 +78,7 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
         cell.tweetText.text = tweet.text
         cell.tweetUser.text = tweet.name
         cell.tweetDate.text = tweet.date
-        
+        cell.backgroundColor = UIColor(white: 0, alpha: 0.5)
         return cell
     }
     
