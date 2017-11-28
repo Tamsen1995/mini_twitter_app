@@ -74,15 +74,13 @@ class ViewController: UIViewController, UITextFieldDelegate, UITableViewDelegate
             fatalError("The dequeued cell is not an instance of MealTableViewCell.")
         }
         
+        // This loads an array Tweet structs containing the desired strings into the tweetsArray of the class
         cell.tweetText.text = tweet.text
         cell.tweetUser.text = tweet.name
-       // cell.tweetUser. // TODO add date here into the cell once it's in the struct and array
-        // This loads an array Tweet structs
-        // containing the desired string into the tweetsArray of the class
+        cell.tweetDate.text = tweet.date
         
         return cell
     }
-    
     
     // This function gets the bearer token, and then fires off the search request
     func makeRequest(contains: String, completion: @escaping (_ tweetsArray: [Tweet]) -> ()) {
